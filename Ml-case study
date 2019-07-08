@@ -1,0 +1,260 @@
+
+import os
+
+#os.chdir(r"C:\python\ML_case_study_ey")
+
+import pandas as pd
+import matplotlib.pyplot as plt
+get_ipython().magic(u'matplotlib inline')
+
+sales_data = pd.read_excel("case_study_ML.xlsx")
+
+sales_data.info()
+
+
+# In[134]:
+
+
+sales_data
+
+
+# In[21]:
+
+
+print (pd.to_datetime('2015-9' + '-0', format='%Y-%W-%w'))
+
+
+# In[92]:
+
+
+pd.crosstab(sales_data.ISO_Week, sales_data.SKU,  margins=True)
+
+
+# In[100]:
+
+
+data =sales_data.groupby([
+    'ISO_Week',
+    'SKU',
+]).Sales.max().unstack()
+
+
+# In[101]:
+
+
+data = data.reset_index()
+
+
+# In[47]:
+
+
+data = data.rename(columns={'SKU':'Week'})
+#data.index(columns={'ISO_Week'})
+
+
+# In[102]:
+
+
+data.set_index(['ISO_Week'], inplace = True, 
+                    append = True, drop = True) 
+
+
+# In[108]:
+
+
+data = data.fillna(0)
+
+
+# In[104]:
+
+
+data[data < 0] = 0
+
+
+# In[114]:
+
+
+data.index
+
+
+# In[118]:
+
+
+data.reset_index()
+
+
+# In[119]:
+
+
+data = data.reset_index().drop('level_0', axis=1)
+
+
+# In[128]:
+
+
+closeup_data = data[['ISO_Week','closeup']]
+colgate_data = data[['ISO_Week','colgate']]
+pepsodent_data = data[['ISO_Week','pepsodent']]
+
+
+# In[131]:
+
+
+colgate_data.plot(grid=True)
+
+
+# In[132]:
+
+
+pepsodent_data.plot(grid=True)
+
+
+# In[133]:
+
+
+closeup_data.plot(grid=True)
+
+
+# In[37]:
+
+
+sales_data['SKU'].unique()
+
+
+# In[38]:
+
+
+sales_data['Season'].unique()
+
+
+# In[47]:
+
+
+sales_data.groupby('SKU').Sales.count()
+
+
+# In[51]:
+
+
+sales_data['SKU'].value_counts()
+
+
+# In[78]:
+
+
+#sales_data['ISO_Week'].value_counts()
+
+
+# In[79]:
+
+
+#duplicates
+sales_data[sales_data.duplicated(subset={'SKU','ISO_Week','Sales','Season'})]
+
+
+# In[78]:
+
+
+sales_data_nodup = sales_data.drop_duplicates(subset={'SKU','ISO_Week','Sales','Season'})
+
+
+# In[79]:
+
+
+sales_data_nodup['SKU'].value_counts()
+
+
+# In[80]:
+
+
+#sales_data_nodup.sort_values(by=['SKU','ISO_Week'])[sales_data['SKU']=='closeup']
+
+closeup_data = sales_data[sales_data['SKU']=='closeup'].sort_values(by=['SKU','ISO_Week'])
+
+
+# In[81]:
+
+
+closeup_data.
+
+
+# In[92]:
+
+
+sales_data_nodup.isnull().any().any()
+
+
+# In[80]:
+
+
+#duplicates in close up
+#closeup_data[closeup_data.duplicated(subset={'SKU','ISO_Week','Sales','Season'})]
+
+
+# In[63]:
+
+
+#closeup_datacolgate_data = sales_data[sales_data['SKU']=='colgate'].sort_values(by=['SKU','ISO_Week'])
+
+
+# In[81]:
+
+
+##duplicates in colgatecloseup_data
+#colgate_data[colgate_data.duplicated(subset={'SKU','ISO_Week','Sales','Season'})]
+
+
+# In[66]:
+
+
+#pepsodent_data = sales_data[sales_data['SKU']=='pepsodent'].sort_values(by=['SKU','ISO_Week'])
+
+
+# In[82]:
+
+
+#duplicates in pepsodent
+#pepsodent_data[pepsodent_data.duplicated(subset={'SKU','ISO_Week','Sales','Season'})]
+
+
+# In[12]:
+
+
+nodup_sales_data = sales_data.drop_duplicates(subset={'SKU','ISO_Week','Sales','Season'})
+
+
+# In[13]:
+
+
+nodup_sales_data.shape
+
+
+# In[25]:
+
+
+nodup_sales_data = nodup_sales_data[nodup_ml_data['Sales'] != 0.0]
+
+
+# In[29]:
+
+
+nodup_sales_data.shape
+
+
+# In[27]:
+
+
+final_sales_data = nosales_ml_data.dropna(axis=0,how='any')
+
+
+# In[28]:
+
+
+final.shape
+
+
+# In[30]:
+
+
+final.groupby('SKU').Sales.count()
+
